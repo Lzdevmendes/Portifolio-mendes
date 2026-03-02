@@ -267,7 +267,13 @@ function ExperienceItem({
       </div>
 
       {/* Content card */}
-      <div
+      <motion.div
+        whileHover={{
+          borderColor: "rgba(13,148,136,0.38)",
+          boxShadow: "0 16px 48px rgba(13,148,136,0.07)",
+          y: -3,
+        }}
+        transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] as [number, number, number, number] }}
         style={{
           background: "var(--color-bg-card)",
           border: "1px solid var(--color-border)",
@@ -406,9 +412,17 @@ function ExperienceItem({
             listStyle: "none",
           }}
         >
-          {exp.highlights.map((h) => (
-            <li
+          {exp.highlights.map((h, hi) => (
+            <motion.li
               key={h}
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-20px" }}
+              transition={{
+                duration: 0.4,
+                delay: index * 0.08 + hi * 0.07,
+                ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
+              }}
               style={{
                 display: "flex",
                 gap: "10px",
@@ -418,7 +432,8 @@ function ExperienceItem({
                 lineHeight: 1.6,
               }}
             >
-              <span
+              <motion.span
+                whileInView={{ color: "var(--color-teal)" }}
                 style={{
                   color: "var(--color-teal)",
                   fontWeight: 700,
@@ -427,9 +442,9 @@ function ExperienceItem({
                 }}
               >
                 ↗
-              </span>
+              </motion.span>
               {h}
-            </li>
+            </motion.li>
           ))}
         </ul>
 
@@ -454,7 +469,7 @@ function ExperienceItem({
             </span>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       <style>{`
         @media (max-width: 767px) {
