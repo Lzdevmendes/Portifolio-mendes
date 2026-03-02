@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { Star, ExternalLink, ArrowUpRight } from "lucide-react";
 import type { GithubRepo } from "@/lib/github";
 
@@ -85,8 +85,30 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
   const langColor = repo.language ? (LANG_COLORS[repo.language] ?? "#555") : null;
   const colDelay = (index % 3) * 0.08;
 
+  // 3-D tilt
+  const rotX = useMotionValue(0);
+  const rotY = useMotionValue(0);
+  const springRotX = useSpring(rotX, { stiffness: 200, damping: 22 });
+  const springRotY = useSpring(rotY, { stiffness: 200, damping: 22 });
+
+  function onTiltMove(e: React.MouseEvent<HTMLElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    rotX.set(((e.clientY - cy) / (rect.height / 2)) * -5);
+    rotY.set(((e.clientX - cx) / (rect.width / 2)) * 5);
+  }
+
+  function onTiltEnd(e: React.MouseEvent<HTMLElement>) {
+    rotX.set(0);
+    rotY.set(0);
+    (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)";
+  }
+
   return (
     <motion.article
+      onMouseMove={onTiltMove}
+      onMouseLeave={onTiltEnd}
       initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
@@ -95,7 +117,6 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
         delay: colDelay,
         ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
       }}
-      whileHover={{ y: -5 }}
       style={{
         background: "var(--color-bg-card)",
         border: "1px solid var(--color-border)",
@@ -108,14 +129,13 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
         overflow: "hidden",
         transition: "border-color 0.25s",
         cursor: "default",
+        transformPerspective: 800,
+        rotateX: springRotX,
+        rotateY: springRotY,
       }}
       onMouseEnter={(e) => {
         (e.currentTarget as HTMLElement).style.borderColor =
           "rgba(13,148,136,0.4)";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.borderColor =
-          "var(--color-border)";
       }}
     >
       {/* Header row */}
