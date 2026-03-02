@@ -3,6 +3,63 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 
+const SKILL_URLS: Record<string, string> = {
+  // Frontend
+  React: "https://react.dev",
+  "Next.js": "https://nextjs.org",
+  TypeScript: "https://www.typescriptlang.org",
+  JavaScript: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+  Flutter: "https://flutter.dev",
+  "Tailwind CSS": "https://tailwindcss.com",
+  "Framer Motion": "https://www.framer.com/motion",
+  "HTML & CSS": "https://developer.mozilla.org/en-US/docs/Web/HTML",
+  // Backend
+  "Node.js": "https://nodejs.org",
+  NestJS: "https://nestjs.com",
+  Express: "https://expressjs.com",
+  ".NET / C#": "https://dotnet.microsoft.com",
+  Go: "https://go.dev",
+  "Java / Spring": "https://spring.io",
+  Python: "https://www.python.org",
+  "Flask / FastAPI": "https://fastapi.tiangolo.com",
+  "REST & GraphQL": "https://graphql.org",
+  // Banco de Dados
+  PostgreSQL: "https://www.postgresql.org",
+  "SQL Server": "https://www.microsoft.com/sql-server",
+  MongoDB: "https://www.mongodb.com",
+  Redis: "https://redis.io",
+  "Prisma ORM": "https://www.prisma.io",
+  TypeORM: "https://typeorm.io",
+  Migrations: "https://www.prisma.io/docs/orm/prisma-migrate",
+  // DevOps & Cloud
+  Docker: "https://www.docker.com",
+  AWS: "https://aws.amazon.com",
+  Azure: "https://azure.microsoft.com",
+  "CI/CD": "https://github.com/features/actions",
+  "GitHub Actions": "https://github.com/features/actions",
+  Linux: "https://www.linux.org",
+  Nginx: "https://nginx.org",
+  Git: "https://git-scm.com",
+  "Automação & Bots": "https://github.com/Lzdevmendes",
+  // Arquitetura
+  Microsserviços: "https://microservices.io",
+  "Clean Architecture":
+    "https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html",
+  DDD: "https://martinfowler.com/tags/domain%20driven%20design.html",
+  "Event-Driven": "https://aws.amazon.com/event-driven-architecture",
+  SOLID: "https://en.wikipedia.org/wiki/SOLID",
+  Monorepos: "https://nx.dev",
+  "API Gateway": "https://www.nginx.com/resources/glossary/api-gateway",
+  // Pagamentos
+  Stripe: "https://stripe.com/docs",
+  PIX: "https://www.bcb.gov.br/estabilidadefinanceira/pix",
+  PagSeguro: "https://dev.pagseguro.uol.com.br",
+  "Gateways de Pagamento": "https://stripe.com/docs",
+  Webhooks: "https://stripe.com/docs/webhooks",
+  Conciliação: "https://stripe.com/docs/reports",
+  "+R$1.5M processados": "https://github.com/Lzdevmendes",
+};
+
 interface SkillCategory {
   label: string;
   tag: string;
@@ -367,27 +424,59 @@ function SkillPill({
   onEnter: () => void;
   onLeave: () => void;
 }) {
+  const url = SKILL_URLS[skill];
+
+  const sharedAnimate = {
+    borderColor: isHovered ? color : "var(--color-border)",
+    color: isHovered ? color : "var(--color-muted)",
+    backgroundColor: isHovered ? `${color}10` : "transparent",
+  };
+
+  const sharedStyle = {
+    fontFamily: "var(--font-inter)",
+    fontSize: "0.75rem",
+    fontWeight: 500,
+    border: "1px solid var(--color-border)",
+    borderRadius: "6px",
+    padding: "4px 10px",
+    userSelect: "none" as const,
+    letterSpacing: "0.01em",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "3px",
+  };
+
+  if (url) {
+    return (
+      <motion.a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        onMouseEnter={onEnter}
+        onMouseLeave={onLeave}
+        animate={sharedAnimate}
+        transition={{ duration: 0.18 }}
+        style={{ ...sharedStyle, cursor: "pointer" }}
+      >
+        {skill}
+        <motion.span
+          animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -3 }}
+          transition={{ duration: 0.15 }}
+          style={{ fontSize: "0.65rem", lineHeight: 1 }}
+        >
+          ↗
+        </motion.span>
+      </motion.a>
+    );
+  }
+
   return (
     <motion.span
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
-      animate={{
-        borderColor: isHovered ? color : "var(--color-border)",
-        color: isHovered ? color : "var(--color-muted)",
-        backgroundColor: isHovered ? `${color}10` : "transparent",
-      }}
+      animate={sharedAnimate}
       transition={{ duration: 0.18 }}
-      style={{
-        fontFamily: "var(--font-inter)",
-        fontSize: "0.75rem",
-        fontWeight: 500,
-        border: "1px solid var(--color-border)",
-        borderRadius: "6px",
-        padding: "4px 10px",
-        cursor: "default",
-        userSelect: "none",
-        letterSpacing: "0.01em",
-      }}
+      style={{ ...sharedStyle, cursor: "default" }}
     >
       {skill}
     </motion.span>
