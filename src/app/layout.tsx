@@ -16,6 +16,10 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
   title: "Luiz Mendes — Desenvolvedor Fullstack JR / Pleno",
   description:
     "Desenvolvedor Fullstack JR / Pleno especializado em arquiteturas escaláveis com .NET, Go, Node.js e Flutter. Mais de R$ 1,0 milhão processados em soluções de pagamento.",
