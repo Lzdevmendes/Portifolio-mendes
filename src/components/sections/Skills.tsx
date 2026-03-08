@@ -154,7 +154,7 @@ const categories: SkillCategory[] = [
       "Gateways de Pagamento",
       "Webhooks",
       "Conciliação",
-      "+R$1.5M processados",
+      "+R$1.0M processados",
     ],
   },
 ];
