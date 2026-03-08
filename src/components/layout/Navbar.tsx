@@ -11,6 +11,7 @@ const navLinks = [
   { label: "About", href: "#about" },
   { label: "Projects", href: "#projects" },
   { label: "Experience", href: "#experience" },
+  { label: "Skills", href: "#skills" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -37,7 +38,7 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const ids = ["about", "projects", "experience", "contact"];
+    const ids = ["about", "projects", "experience", "skills", "contact"];
 
     // "Nearby" → section visible in the broad middle 90% of the viewport → dot dim
     const nearbyObs = new IntersectionObserver(
